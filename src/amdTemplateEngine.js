@@ -20,7 +20,10 @@
     ko.templateSources.requireTemplate.prototype.text = function(value) {
         //when the template is retrieved, check if we need to load it
         if (!this.requested && this.key) {
-            require([engine.defaultRequireTextPluginName + "!" + addTrailingSlash(engine.defaultPath) + this.key + engine.defaultSuffix], function(templateContent) {
+            var filename = this.key + engine.defaultSuffix;
+            if(filename.charAt(0) != '/') filename = addTrailingSlash(engine.defaultPath) + filename;
+            
+            require([engine.defaultRequireTextPluginName + "!" + filename], function(templateContent) {
                 this.retrieved = true;
                 this.template(templateContent);
             }.bind(this));
